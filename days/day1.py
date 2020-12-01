@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+from functools import reduce
+from itertools import combinations
+import operator
 import pathlib
 from typing import List, Optional
 
@@ -12,14 +15,16 @@ def load_file(fn: str = DATA_FILE) -> List[int]:
         return [int(line.strip()) for line in in_file]
 
 
-def solve(nums: List[int], target: int = TARGET) -> Optional[int]:
-    low_nums = [num for num in nums if num < target]
-    for i in range(0, len(low_nums)):
-        for j in range(i+1, len(low_nums)):
-            if low_nums[i] + low_nums[j] == target:
-                return low_nums[i] * low_nums[j]
-    return None
+def solve(nums: List[int], combo_len: int, target: int = TARGET) -> Optional[int]:
+    matches = [combo for combo in combinations(
+        nums, combo_len) if sum(combo) == target]
+    if len(matches) == 1:
+        return reduce(operator.mul, matches[0], 1)
+    else:
+        raise ValueError(
+            f"Found {len(matches)} matches of length {combo_len} summing to {target}")
 
 
 if __name__ == "__main__":
-    print(solve(load_file()))
+    print(solve(load_file(), 2))
+    print(solve(load_file(), 3))
