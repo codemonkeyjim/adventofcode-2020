@@ -3,7 +3,7 @@ import pytest
 from days import day3
 
 TEST_FILE = "tests/data/day3_test.txt"
-TEST_FILE_SIZE = (4, 2)
+TEST_FILE_SIZE = (11, 11)
 
 
 @pytest.mark.parametrize(
@@ -29,10 +29,22 @@ def test_move():
     grid.load_file(TEST_FILE)
     assert grid.size() == TEST_FILE_SIZE
     assert grid.pos() == (0, 0)
-    grid.move(2, 1)
+    grid.move((2, 1))
     assert grid.pos() == (2, 1)
     # Wrap around x-axis
-    grid.move(TEST_FILE_SIZE[0] - 2, 0) == (0, 1)
+    grid.move((TEST_FILE_SIZE[0] - 2, 0)) == (0, 1)
     # Fall off end of y-axis
     with pytest.raises(IndexError):
-        grid.move(0, TEST_FILE_SIZE[1] - 1)
+        grid.move((0, TEST_FILE_SIZE[1] - 1))
+
+
+def test_part1():
+    grid = day3.Grid()
+    grid.load_file(TEST_FILE)
+    assert grid.check_slope((3, 1)) == 7
+
+
+def test_part2():
+    grid = day3.Grid()
+    grid.load_file(TEST_FILE)
+    assert grid.check_slopes(day3.ALL_SLOPES) == 336
