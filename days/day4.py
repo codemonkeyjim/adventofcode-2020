@@ -4,8 +4,6 @@ import pathlib
 import re
 from typing import Any, Callable
 
-from attr import field
-
 DATA_FILE = 'data/day4.txt'
 
 
